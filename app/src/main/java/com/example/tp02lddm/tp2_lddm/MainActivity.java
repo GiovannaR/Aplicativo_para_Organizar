@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.tp02lddm.tp2_lddm.Fragments.FirstFragment;
 import com.example.tp02lddm.tp2_lddm.Fragments.SecondFragment;
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity
     String materia;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,41 +60,17 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Tp2DbHelper dbHelper = new Tp2DbHelper(this);
+        inicializacao();
+
+
+
+        /*Tp2DbHelper dbHelper = new Tp2DbHelper(this);
         mDb = dbHelper.getWritableDatabase();
         TestUtil.insertFakeData(mDb);
+*/
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //startActivity(new Intent(MainActivity.this, Pop.class));
-                //TextView Aleatorio = (TextView) findViewById(R.id.aleatorio);
-                //try {
-                //MyDialogC();
-            //}catch( Exception io){
-              //      Aleatorio.setText("Tamanho" + io.getMessage());
-            //}
-              //  Aleatorio.setText("Tamanho" + materia);
-
-                    //materia = "AA";
-               // if (materia.length() > 0){
-
-                    String subject = anotherSubjects.poll();
-                    //String subject = "AAA";
-                    linkMenu.add(subject).setOnMenuItemClickListener(onMenuItemClick("LINK"));
-                    pdfMenu.add(subject).setOnMenuItemClickListener(onMenuItemClick("PDF"));
-                    videoMenu.add(subject).setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
-
-                    Snackbar.make(view, "Matéria adicionada com sucesso!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                //}*/
-
-
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -97,7 +78,75 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        inicializacao();
+        botao();
+
+    }
+
+    public void botao (){
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+                View mview = getLayoutInflater().inflate(R.layout.customedialog, null);
+                final EditText materia = (EditText) mview.findViewById(R.id.mnova);
+                Button addBtn = (Button) mview.findViewById(R.id.close);
+                mBuilder.setView(mview);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+
+                addBtn.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+                        if(!(materia.getText().toString().isEmpty())){
+
+                            //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                             //menu = navigationView.getMenu();
+
+                            String sub = materia.getText().toString();
+
+                            linkMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("LINK"));
+                            pdfMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("PDF"));
+                            videoMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
+
+                            Toast toast = Toast.makeText(getApplicationContext(), "Matéria adicionada com sucesso", Toast.LENGTH_SHORT);
+                            toast.show();
+                            dialog.dismiss();
+
+                        }else{
+                            materia.setError("Insira uma matéria");
+                            Toast toast = Toast.makeText(getApplicationContext(), "Matéria adicionada com sucesso", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                });
+                //startActivity(new Intent(MainActivity.this, Pop.class));
+                //TextView Aleatorio = (TextView) findViewById(R.id.aleatorio);
+                //try {
+                //MyDialogC();
+                //}catch( Exception io){
+                //      Aleatorio.setText("Tamanho" + io.getMessage());
+                //}
+                //  Aleatorio.setText("Tamanho" + materia);
+
+                //materia = "AA";
+                // if (materia.length() > 0){
+
+                //String subject = anotherSubjects.poll();
+                //String subject = "AAA";
+
+
+                //Snackbar.make(view, "Matéria adicionada com sucesso!", Snackbar.LENGTH_LONG)
+                //      .setAction("Action", null).show();
+                //}*/
+
+
+            }
+        });
 
     }
 
@@ -123,8 +172,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         menu = navigationView.getMenu();
         pdfMenu = menu.addSubMenu("PDF");
-        linkMenu = menu.addSubMenu("Link");
-        videoMenu = menu.addSubMenu("Vídeo");
+        linkMenu = menu.addSubMenu("LINK");
+        videoMenu = menu.addSubMenu("VIDEO");
 
         for (int i = 0; i < subjects.size(); i++) {
             pdfMenu.add(String.valueOf(subjects.get(i))).setOnMenuItemClickListener(onMenuItemClick("PDF"));
@@ -132,6 +181,7 @@ public class MainActivity extends AppCompatActivity
             videoMenu.add(String.valueOf(subjects.get(i))).setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
         }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -193,7 +243,7 @@ public class MainActivity extends AppCompatActivity
         };
     }
 
-    public void MyDialogC(){
+   /* public void MyDialogC(){
         mydialog = new Dialog(MainActivity.this);
         mydialog.setContentView(R.layout.customedialog);
         mydialog.setTitle("Qual matéria deseja adicioinar?");
@@ -216,7 +266,7 @@ public class MainActivity extends AppCompatActivity
                     materia = mnova.getText().toString();
                     //texto.setText(anotherSubjects.get(0));
             }
-        });*/
+        });
 
 
         close.setOnClickListener(new View.OnClickListener(){
@@ -229,7 +279,7 @@ public class MainActivity extends AppCompatActivity
         });
         mydialog.show();
     }
-
+*/
 
     private Cursor getAllGuests(){
         return mDb.query(
