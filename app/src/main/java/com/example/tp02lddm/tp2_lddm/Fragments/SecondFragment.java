@@ -21,9 +21,11 @@ public class SecondFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        /*try {
+        View Myview = inflater.inflate(R.layout.second_layout, container, false);;
 
-            String[] menuitem = {"Vídeos", "Links"};
+        try {
+
+            String[] menuitem = {"Link 1", "Link 2"};
 
             ListView listview = (ListView) Myview.findViewById(R.id.lviw);
 
@@ -36,13 +38,13 @@ public class SecondFragment extends Fragment {
 
 
         }catch(Exception io){
-            //TextView textView = (TextView) getView().findViewById(R.id.);
-            //io.getMessage();
-        }*/
+            TextView textView = (TextView) getView().findViewById(R.id.texto);
+            textView.setText(io.getMessage());
+        }
 
         String subjectName = this.getArguments().getString("subjectName");
         getActivity().setTitle(subjectName + " : " + "Link");
-        View Myview = inflater.inflate(R.layout.second_layout, container, false);
+
 
         return Myview;
     }

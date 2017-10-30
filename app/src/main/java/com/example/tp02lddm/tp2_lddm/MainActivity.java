@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity
     Dialog mydialog;
     Bundle params = new Bundle();
     String materia;
+
+
+    ArrayAdapter<String> adapter;
 
 
 
@@ -124,27 +128,6 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
-                //startActivity(new Intent(MainActivity.this, Pop.class));
-                //TextView Aleatorio = (TextView) findViewById(R.id.aleatorio);
-                //try {
-                //MyDialogC();
-                //}catch( Exception io){
-                //      Aleatorio.setText("Tamanho" + io.getMessage());
-                //}
-                //  Aleatorio.setText("Tamanho" + materia);
-
-                //materia = "AA";
-                // if (materia.length() > 0){
-
-                //String subject = anotherSubjects.poll();
-                //String subject = "AAA";
-
-
-                //Snackbar.make(view, "Matéria adicionada com sucesso!", Snackbar.LENGTH_LONG)
-                //      .setAction("Action", null).show();
-                //}*/
-
-
             }
         });
 
