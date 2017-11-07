@@ -30,6 +30,11 @@ import com.example.tp02lddm.tp2_lddm.data.TestUtil;
 import com.example.tp02lddm.tp2_lddm.data.Tp2Contract;
 import com.example.tp02lddm.tp2_lddm.data.Tp2DbHelper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -51,12 +56,6 @@ public class MainActivity extends AppCompatActivity
     String materia;
 
 
-    ArrayAdapter<String> adapter;
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +73,6 @@ public class MainActivity extends AppCompatActivity
 */
 
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void botao (){
+    public void botao() {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -102,26 +99,30 @@ public class MainActivity extends AppCompatActivity
                 final AlertDialog dialog = mBuilder.create();
                 dialog.show();
 
-                addBtn.setOnClickListener(new View.OnClickListener(){
+                addBtn.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
-                        if(!(materia.getText().toString().isEmpty())){
+                        if (!(materia.getText().toString().isEmpty())) {
 
                             //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                             //menu = navigationView.getMenu();
+                            //menu = navigationView.getMenu();
 
                             String sub = materia.getText().toString();
+                            if(naoExistente(sub)){
+                                addArquivo(sub);
+                                linkMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("LINK"));
+                                pdfMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("PDF"));
+                                videoMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
 
-                            linkMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("LINK"));
-                            pdfMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("PDF"));
-                            videoMenu.add(sub).setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
+                                Toast toast = Toast.makeText(getApplicationContext(), "Matéria adicionada com sucesso", Toast.LENGTH_SHORT);
+                                toast.show();
+                                dialog.dismiss();
+                            }
 
-                            Toast toast = Toast.makeText(getApplicationContext(), "Matéria adicionada com sucesso", Toast.LENGTH_SHORT);
-                            toast.show();
-                            dialog.dismiss();
 
-                        }else{
+
+                        } else {
                             materia.setError("Insira uma matéria");
                             Toast toast = Toast.makeText(getApplicationContext(), "Matéria adicionada com sucesso", Toast.LENGTH_SHORT);
                             toast.show();
@@ -150,19 +151,20 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void inicializacao (){
+    public void inicializacao() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         menu = navigationView.getMenu();
         pdfMenu = menu.addSubMenu("PDF");
         linkMenu = menu.addSubMenu("LINK");
         videoMenu = menu.addSubMenu("VIDEO");
+        update();
 
-        for (int i = 0; i < subjects.size(); i++) {
+        /*for (int i = 0; i < subjects.size(); i++) {
             pdfMenu.add(String.valueOf(subjects.get(i))).setOnMenuItemClickListener(onMenuItemClick("PDF"));
             linkMenu.add(String.valueOf(subjects.get(i))).setOnMenuItemClickListener(onMenuItemClick("LINK"));
             videoMenu.add(String.valueOf(subjects.get(i))).setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
-        }
+        }*/
     }
 
 
@@ -226,54 +228,93 @@ public class MainActivity extends AppCompatActivity
         };
     }
 
-   /* public void MyDialogC(){
-        mydialog = new Dialog(MainActivity.this);
-        mydialog.setContentView(R.layout.customedialog);
-        mydialog.setTitle("Qual matéria deseja adicioinar?");
 
-        Button close = (Button)mydialog.findViewById(R.id.close);
+    public void update(){
+        File file = getApplicationContext().getFileStreamPath("materia.txt");
+        String linha;
 
-        //Button salvar = (Button)mydialog.findViewById(R.id.confirm);
+        if ( file.exists( ) ){
+            try{
+                BufferedReader leitor = new BufferedReader(new InputStreamReader(openFileInput("materia.txt")));
+                linha = leitor.readLine();
 
-        //final TextView texto= mydialog.findViewById(R.id.textq);
-        final EditText mnova = (EditText)mydialog.findViewById(R.id.mnova);
+                while (linha != null) {
+                    pdfMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("PDF"));
+                    linkMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("Link"));
+                    videoMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("Vídeo"));
+                    linha = leitor.readLine();
+                }
 
-        //salvar.setEnabled(true);
-        close.setEnabled(true);
-
-        /*salvar.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-
-                    materia = mnova.getText().toString();
-                    //texto.setText(anotherSubjects.get(0));
+            }catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(this, "Erro salving file!", Toast.LENGTH_LONG).show();
             }
-        });
 
+        }else{
+            try{
+                FileOutputStream fos = openFileOutput("materias.txt", MODE_APPEND);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+                outputStreamWriter.write("LDDM\n");
+                outputStreamWriter.write("Grafos\n");
+                outputStreamWriter.write("AED 2\n");
+                outputStreamWriter.flush();
+                outputStreamWriter.close();
+                pdfMenu.add("LDDM").setOnMenuItemClickListener(onMenuItemClick("PDF"));
+                pdfMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("PDF"));
+                pdfMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("PDF"));
 
-        close.setOnClickListener(new View.OnClickListener(){
+                linkMenu.add("LDDM").setOnMenuItemClickListener(onMenuItemClick("Link"));
+                linkMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("Link"));
+                linkMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("Link"));
 
-            @Override
-            public void onClick(View view) {
-                materia = mnova.getText().toString();
-                mydialog.cancel();
+                videoMenu.add("LDDM").setOnMenuItemClickListener(onMenuItemClick("Video"));
+                videoMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("Video"));
+                videoMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("Video"));
+            } catch (Exception e){
+                e.printStackTrace();
             }
-        });
-        mydialog.show();
+        }
     }
-*/
 
-    private Cursor getAllGuests(){
-        return mDb.query(
-                Tp2Contract.SubjectEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Tp2Contract.SubjectEntry.COLUMN_TIMESTAMP);
 
+
+    public void addArquivo (String adicionada){
+        try{
+            FileOutputStream file = openFileOutput("materias.txt",MODE_APPEND);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(file);
+            outputStreamWriter.write(adicionada + "\n");
+            outputStreamWriter.flush();
+            outputStreamWriter.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(this, "Error saving file!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean naoExistente (String adicionada){
+        boolean resp = true;
+        if (pdfMenu.size() == 0 || linkMenu.size() == 0 || videoMenu.size() == 0 ) {
+            resp = true;
+        }
+        else {
+            for (int i = 0; i < pdfMenu.size(); i ++) {
+                if ( adicionada.equals(pdfMenu.getItem(i).getTitle().toString())) {
+                    resp = false;
+                }
+            }
+            for (int i = 0; i < linkMenu.size(); i ++) {
+                if ( adicionada.equals(linkMenu.getItem(i).getTitle().toString())) {
+                    resp = false;
+                }
+            }
+            for (int i = 0; i < videoMenu.size(); i ++) {
+                if ( adicionada.equals(videoMenu.getItem(i).getTitle().toString())) {
+                    resp = false;
+                }
+            }
+        }
+        return resp;
     }
 }
 

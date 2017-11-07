@@ -20,6 +20,7 @@ android:layout_height="match_parent">
     android:text="Adicionar PDF"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:layout_marginTop="5dp" />
+    android:layout_marginTop="5dp"
+    />
 
 </LinearLayout>
