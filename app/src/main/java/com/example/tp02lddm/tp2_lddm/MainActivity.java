@@ -45,15 +45,12 @@ public class MainActivity extends AppCompatActivity
     private SQLiteDatabase mDb;
 
     ArrayList subjects = new ArrayList<>(Arrays.asList("LDDM", "Grafos", "AED 2"));
-    //ArrayList<String> anotherSubjects = new ArrayList<String>();
     LinkedList<String> anotherSubjects = new LinkedList<>(Arrays.asList("Banco de Dados", "Calculo I", "Cálculo II", "Cálculo III", "Algebra Linear", "Matemática Discreta", "Estatística", "AED 1", "AED 3", "LP", "PAA", "IA", "Compiladores", "PID", "Comp. Paralela", "Comp. Gráfica", "Otimização"));
     Menu menu = null;
     SubMenu pdfMenu = null;
     SubMenu linkMenu = null;
     SubMenu videoMenu = null;
-    Dialog mydialog;
-    Bundle params = new Bundle();
-    String materia;
+
 
 
     @Override
@@ -200,11 +197,11 @@ public class MainActivity extends AppCompatActivity
 
                 switch (fileType) {
                     case "PDF":
-                        FirstFragment firstFragment = new FirstFragment();
+                        ThirdFragment thirdfragment = new ThirdFragment();
 
                         args.putString("subjectName", item.getTitle().toString());
-                        firstFragment.setArguments(args);
-                        ft.replace(R.id.content_frame, firstFragment);
+                        thirdfragment.setArguments(args);
+                        ft.replace(R.id.content_frame, thirdfragment);
                         break;
                     case "LINK":
                         SecondFragment secondFragment = new SecondFragment();
@@ -214,11 +211,11 @@ public class MainActivity extends AppCompatActivity
                         ft.replace(R.id.content_frame, secondFragment);
                         break;
                     case "VIDEO":
-                        ThirdFragment thirdFragment = new ThirdFragment();
+                        FirstFragment firstFragment = new FirstFragment();
 
                         args.putString("subjectName", item.getTitle().toString());
-                        thirdFragment.setArguments(args);
-                        ft.replace(R.id.content_frame, thirdFragment);
+                        firstFragment.setArguments(args);
+                        ft.replace(R.id.content_frame, firstFragment);
                         break;
                 }
 
@@ -240,8 +237,8 @@ public class MainActivity extends AppCompatActivity
 
                 while (linha != null) {
                     pdfMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("PDF"));
-                    linkMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("Link"));
-                    videoMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("Vídeo"));
+                    linkMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("LINK"));
+                    videoMenu.add(linha).setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
                     linha = leitor.readLine();
                 }
 
@@ -263,13 +260,13 @@ public class MainActivity extends AppCompatActivity
                 pdfMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("PDF"));
                 pdfMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("PDF"));
 
-                linkMenu.add("LDDM").setOnMenuItemClickListener(onMenuItemClick("Link"));
-                linkMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("Link"));
-                linkMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("Link"));
+                linkMenu.add("LDDM").setOnMenuItemClickListener(onMenuItemClick("LINK"));
+                linkMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("LINK"));
+                linkMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("LINK"));
 
-                videoMenu.add("LDDM").setOnMenuItemClickListener(onMenuItemClick("Video"));
-                videoMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("Video"));
-                videoMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("Video"));
+                videoMenu.add("LDDM").setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
+                videoMenu.add("Grafos").setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
+                videoMenu.add("AED 2").setOnMenuItemClickListener(onMenuItemClick("VIDEO"));
             } catch (Exception e){
                 e.printStackTrace();
             }

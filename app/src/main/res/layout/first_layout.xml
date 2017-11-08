@@ -14,10 +14,10 @@ android:layout_height="match_parent">
     android:layout_height="wrap_content" />
 
 <Button
-    android:id="@+id/addPdf"
+    android:id="@+id/addVideo"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Adicionar PDF"
+    android:text="Adicionar Video"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"

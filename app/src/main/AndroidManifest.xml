@@ -19,8 +19,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Listas.LinkLista">
+        </activity>
+        <activity
+            android:name=".Listas.VideoLista">
+        </activity>
+        <activity
+            android:name=".Listas.PDFLista">
+        </activity>
 
-     <activity android:name=".Pop"></activity>
+        <activity
+            android:name=".AbrirPDF">
+        </activity>
+
+
+        <activity android:name=".Pop"></activity>
     </application>
 
 </manifest>
