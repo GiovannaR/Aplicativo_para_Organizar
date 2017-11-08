@@ -131,6 +131,8 @@ public class VideoLista extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
 
 
 
@@ -160,8 +162,8 @@ public class VideoLista extends AppCompatActivity {
                     }
 
                 });
-            }
-        });
+
+
 
         //update();
     }

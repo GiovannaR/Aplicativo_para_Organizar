@@ -1,4 +1,9 @@
 package com.example.tp02lddm.tp2_lddm;
+/**
+ * TP2_LDDM
+ * Autora: Giovanna Ávila Riqueti
+ * Data: 07/11/2017
+ */
 
 import android.app.Dialog;
 import android.app.FragmentTransaction;
